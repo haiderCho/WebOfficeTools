@@ -1,0 +1,17 @@
+{
+  "name": "@opensuite/ui",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./src/index.tsx",
+  "types": "./src/index.tsx",
+  "scripts": { "build": "tsc", "clean": "rm -rf dist" },
+  "dependencies": {
+    "@opensuite/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@opensuite/tsconfig": "workspace:*",
+    "typescript": "^5.7.0",
+    "react": "^19.0.0",
+    "@types/react": "^19.0.0"
+  }
+}

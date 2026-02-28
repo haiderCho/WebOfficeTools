@@ -1,0 +1,17 @@
+{
+  "name": "@opensuite/plugin-stub",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./index.tsx",
+  "types": "./index.tsx",
+  "dependencies": {
+    "@opensuite/core": "workspace:*",
+    "@opensuite/plugin-api": "workspace:*"
+  },
+  "devDependencies": {
+    "@opensuite/tsconfig": "workspace:*",
+    "typescript": "^5.7.0",
+    "react": "^19.0.0",
+    "@types/react": "^19.0.0"
+  }
+}

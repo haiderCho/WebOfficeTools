@@ -1,0 +1,21 @@
+{
+  "name": "@opensuite/editor-engine",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@opensuite/core": "workspace:*",
+    "immer": "^10.1.0"
+  },
+  "devDependencies": {
+    "@opensuite/tsconfig": "workspace:*",
+    "typescript": "^5.7.0",
+    "react": "^19.0.0",
+    "@types/react": "^19.0.0"
+  }
+}

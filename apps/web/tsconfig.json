@@ -1,0 +1,43 @@
+{
+  "extends": "../../tooling/tsconfig/react.json",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@opensuite/core": [
+        "../../packages/core/src/index.ts"
+      ],
+      "@opensuite/editor-engine": [
+        "../../packages/editor-engine/src/index.ts"
+      ],
+      "@opensuite/plugin-api": [
+        "../../packages/plugin-api/src/index.ts"
+      ],
+      "@opensuite/ui": [
+        "../../packages/ui/src/index.tsx"
+      ],
+      "@opensuite/utils": [
+        "../../packages/utils/src/index.ts"
+      ]
+    },
+    "allowJs": true,
+    "noEmit": true,
+    "incremental": true,
+    "jsx": "preserve"
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

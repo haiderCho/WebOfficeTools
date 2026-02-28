@@ -1,0 +1,38 @@
+# DEV
+.plan/
+.progress/
+.agent/
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+.next/
+dist/
+out/
+
+# Turborepo
+.turbo/
+
+# Storage (runtime data)
+storage/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Debug
+npm-debug.log*
+pnpm-debug.log*
