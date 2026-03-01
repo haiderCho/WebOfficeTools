@@ -1,4 +1,6 @@
+import { SmartPagination } from "./SmartPagination"
 import "katex/dist/katex.min.css"
+import "./editor.css"
 import { Bold, Italic, Strikethrough, Code } from "lucide-react"
 import { useEffect, useState, useRef } from "react"
 import type { EditorProps } from "@opensuite/plugin-api"
@@ -6,12 +8,13 @@ import { tiptapToBlocks, blocksToTiptap } from "./bridge"
 import { useWordStore } from "./store"
 import { createSlashCommand } from "./slashCommand"
 import { createResizableImage } from "./ResizableImage"
+import { PageBreak } from "./PageBreak"
 
 
 export default function WordEditor({ document, onChange, onStatsUpdate }: EditorProps) {
 
 
-  const { setEditor: setStoreEditor, zoom } = useWordStore()
+  const { setEditor: setStoreEditor, zoom, pageSize, margin, readMode } = useWordStore()
 
   const [editor, setEditor] = useState<any | null>(null)
   const [tiptap, setTiptap] = useState<{
@@ -40,8 +43,22 @@ export default function WordEditor({ document, onChange, onStatsUpdate }: Editor
         const { CharacterCount } = await import("@tiptap/extension-character-count")
         const { TextStyle } = await import("@tiptap/extension-text-style")
         const { FontFamily } = await import("@tiptap/extension-font-family")
-        
         const { FontSize, LineHeight } = await import("./typography")
+
+        const { Underline } = await import("@tiptap/extension-underline")
+        const { TextAlign } = await import("@tiptap/extension-text-align")
+        const { Color } = await import("@tiptap/extension-color")
+        const { Highlight } = await import("@tiptap/extension-highlight")
+        const { Subscript } = await import("@tiptap/extension-subscript")
+        const { Superscript } = await import("@tiptap/extension-superscript")
+        const { TaskList } = await import("@tiptap/extension-task-list")
+        const { TaskItem } = await import("@tiptap/extension-task-item")
+        const { Table } = await import("@tiptap/extension-table")
+        const { TableRow } = await import("@tiptap/extension-table-row")
+        const { TableHeader } = await import("@tiptap/extension-table-header")
+        const { TableCell } = await import("@tiptap/extension-table-cell")
+        const { Link } = await import("@tiptap/extension-link")
+        const { SearchAndReplace } = await import("@sereneinserenade/tiptap-search-and-replace")
 
 
 
@@ -57,6 +74,28 @@ export default function WordEditor({ document, onChange, onStatsUpdate }: Editor
             }),
             CodeBlockLowlight.configure({
               lowlight: lowlightInstance,
+            }),
+            Underline,
+            TextAlign.configure({
+              types: ['heading', 'paragraph'],
+            }),
+            TextStyle,
+            Color,
+            Highlight.configure({ multicolor: true }),
+            Subscript,
+            Superscript,
+            TaskList,
+            TaskItem.configure({
+              nested: true,
+            }),
+            Table.configure({
+              resizable: true,
+            }),
+            TableRow,
+            TableHeader,
+            TableCell,
+            SearchAndReplace.configure({
+              searchResultClass: 'search-result',
             }),
             MathExtension.configure({ 
               evaluation: true 
@@ -75,16 +114,16 @@ export default function WordEditor({ document, onChange, onStatsUpdate }: Editor
               },
             }),
             CharacterCount.configure(),
-            TextStyle,
             FontFamily,
             FontSize,
             LineHeight.configure({
               defaultLineHeight: "1.0",
             }),
+            PageBreak,
+            SmartPagination.configure({
+              pageHeightMm: pageSize === 'A3' ? 420 : pageSize === 'Letter' ? 279.4 : 297,
+            }),
           ],
-
-
-
 
           content: blocksToTiptap(document.blocks),
           immediatelyRender: false,
@@ -100,14 +139,15 @@ export default function WordEditor({ document, onChange, onStatsUpdate }: Editor
               onStatsUpdate({
                 words: editor.storage.characterCount.words(),
                 chars: editor.storage.characterCount.characters(),
-              })
+                // Count both automatic spacers and manual page-break nodes
+                pages: (editor.view.dom as HTMLElement).querySelectorAll('.page-spacer, [data-type="page-break"]').length + 1
+              } as any)
             }
           },
 
           editorProps: {
             attributes: {
-              class: "prose prose-sm mx-auto focus:outline-none min-h-[297mm] w-[210mm] p-[25mm] bg-white dark:bg-gray-800 shadow-2xl border border-gray-200 dark:border-gray-700 my-8 print:m-0 print:shadow-none print:w-full",
-              style: "font-size: 12pt; line-height: 1.0;",
+              class: `word-editor-content ${pageSize} margin-${margin} prose prose-sm focus:outline-none max-w-none`,
             },
           },
 
@@ -138,6 +178,22 @@ export default function WordEditor({ document, onChange, onStatsUpdate }: Editor
     }
   }, [editor, setStoreEditor])
 
+  useEffect(() => {
+    if (editor) {
+      const height = pageSize === 'A3' ? 420 : pageSize === 'Letter' ? 279.4 : 297
+      editor.setOptions({
+        smartPagination: {
+           pageHeightMm: height,
+           enabled: true
+        },
+        editorProps: {
+          attributes: {
+            class: `word-editor-content ${pageSize} margin-${margin} prose prose-sm focus:outline-none max-w-none ${readMode ? 'read-mode' : ''}`,
+          }
+        }
+      })
+    }
+  }, [editor, pageSize, margin, readMode])
   if (!editor || !tiptap) {
     return (
       <div className="flex-1 bg-gray-50 dark:bg-gray-900 p-8 min-h-screen animate-pulse" />
@@ -147,9 +203,9 @@ export default function WordEditor({ document, onChange, onStatsUpdate }: Editor
   const { EditorContent, BubbleMenu } = tiptap
 
   return (
-    <div className="flex-1 bg-gray-100 dark:bg-gray-900 p-8 min-h-screen overflow-auto flex flex-col items-center">
+    <div className={`flex-1 bg-gray-200 dark:bg-gray-950 p-8 min-h-screen overflow-auto flex flex-col items-center word-workspace-container ${readMode ? 'read-mode-active' : ''}`}>
       <div 
-        className="transition-transform duration-200 ease-out origin-top"
+        className="transition-transform duration-200 ease-out origin-top flex flex-col items-center"
         style={{ transform: `scale(${zoom / 100})` }}
       >
         {editor && (

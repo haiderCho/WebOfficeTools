@@ -16,6 +16,7 @@ interface DocumentState {
   stats: {
     words: number
     chars: number
+    pages?: number
   }
 
 
@@ -27,7 +28,7 @@ interface DocumentState {
   removeDocument: (id: string) => void
   setLoading: (loading: boolean) => void
   setError: (error: string | null) => void
-  setStats: (stats: { words: number; chars: number }) => void
+  setStats: (stats: { words: number; chars: number; pages?: number }) => void
 
 
   // Async operations
@@ -47,6 +48,7 @@ export const useDocumentStore = create<DocumentState>((set, get) => ({
   stats: {
     words: 0,
     chars: 0,
+    pages: 1,
   },
 
 

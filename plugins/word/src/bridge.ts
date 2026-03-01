@@ -40,10 +40,48 @@ function nodeToBlock(node: JSONContent): Block {
         props: { variant: "ordered-list" },
         children: (node.content ?? []).map(nodeToBlock),
       })
+    case "taskList":
+      return createBlock("container", {
+        props: { variant: "task-list" },
+        children: (node.content ?? []).map(nodeToBlock),
+      })
     case "listItem":
       return createBlock("list-item", {
         content: inlineContent(node.content),
       })
+    case "taskItem":
+      return createBlock("list-item", {
+        props: { checked: !!node.attrs?.checked },
+        content: inlineContent(node.content),
+      })
+    case "table":
+        return createBlock("container", {
+            props: { variant: "table" },
+            children: (node.content ?? []).map(nodeToBlock),
+        })
+    case "tableRow":
+        return createBlock("container", {
+            props: { variant: "table-row" },
+            children: (node.content ?? []).map(nodeToBlock),
+        })
+    case "tableCell":
+        return createBlock("container", {
+            props: { variant: "table-cell" },
+            children: (node.content ?? []).map(nodeToBlock),
+        })
+    case "image":
+        return createBlock("image", {
+            props: { src: node.attrs?.src },
+        })
+    case "math":
+        return createBlock("math", {
+            props: { tex: node.attrs?.tex },
+        })
+    case "codeBlock":
+        return createBlock("code", {
+            props: { language: node.attrs?.language },
+            content: [{ text: node.content?.[0]?.text ?? "", marks: [] }]
+        })
     case "horizontalRule":
       return createBlock("divider", {})
     case "blockquote":
@@ -77,10 +115,20 @@ function blockToNode(block: Block): JSONContent {
         type: "blockquote",
         content: blocksToInline(block.content ?? []),
       }
-    // Lists are mapped to containers in our model for now
+    case "container":
+        const variant = (block.props as { variant?: string })?.variant;
+        if (variant === "bullet-list") return { type: "bulletList", content: (block.children ?? []).map(blockToNode) };
+        if (variant === "ordered-list") return { type: "orderedList", content: (block.children ?? []).map(blockToNode) };
+        if (variant === "task-list") return { type: "taskList", content: (block.children ?? []).map(blockToNode) };
+        if (variant === "table") return { type: "table", content: (block.children ?? []).map(blockToNode) };
+        if (variant === "table-row") return { type: "tableRow", content: (block.children ?? []).map(blockToNode) };
+        if (variant === "table-cell") return { type: "tableCell", content: (block.children ?? []).map(blockToNode) };
+        return { type: "paragraph", content: blocksToInline(block.content ?? []) };
     case "list-item":
+      const isTask = (block.props as { checked?: boolean })?.checked !== undefined;
       return {
-        type: "listItem",
+        type: isTask ? "taskItem" : "listItem",
+        attrs: isTask ? { checked: !!(block.props as any).checked } : {},
         content: [
            { 
              type: "paragraph", 
@@ -88,6 +136,16 @@ function blockToNode(block: Block): JSONContent {
            }
         ]
       }
+    case "image":
+        return { type: "image", attrs: { src: (block.props as { src?: string })?.src } };
+    case "math":
+        return { type: "math", attrs: { tex: (block.props as { tex?: string })?.tex } };
+    case "code":
+        return { 
+            type: "codeBlock", 
+            attrs: { language: (block.props as { language?: string })?.language },
+            content: [{ type: "text", text: block.content?.[0]?.text ?? "" }]
+        };
     default:
       return {
         type: "paragraph",
@@ -97,17 +155,25 @@ function blockToNode(block: Block): JSONContent {
 }
 
 function inlineContent(nodes: JSONContent[] = []): InlineContent[] {
-  return nodes.map((n) => ({
+  return (nodes || []).map((n) => ({
     text: n.text ?? "",
-    marks: (n.marks ?? []).map((m) => m.type as Mark),
-    // Simplified: TipTap attrs are complex, focusing on basics for Phase 1
+    marks: (n.marks ?? []).map((m) => ({
+      type: m.type as Mark,
+      props: m.attrs || {},
+    })),
   }))
 }
 
 function blocksToInline(content: InlineContent[]): JSONContent[] {
-  return content.map((c) => ({
+  return (content || []).map((c) => ({
     type: "text",
     text: c.text,
-    marks: (c.marks ?? []).map((m) => ({ type: m })),
+    marks: (c.marks ?? []).map((m) => {
+      if (typeof m === 'string') return { type: m };
+      return { 
+        type: m.type, 
+        attrs: m.props 
+      };
+    }),
   }))
 }

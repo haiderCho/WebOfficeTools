@@ -1,12 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react"
+import Image from "@tiptap/extension-image"
 
 export const createResizableImage = async () => {
-  const { NodeViewWrapper, ReactNodeViewRenderer } = await import("@tiptap/react")
-  const Image = (await import("@tiptap/extension-image")).default || (await import("@tiptap/extension-image")).Image
-
-
   return Image.extend({
     addAttributes() {
       return {
@@ -29,13 +26,8 @@ export const createResizableImage = async () => {
 }
 
 function ImageView(props: any) {
-  // Since we are now using dynamic rendering, we need to import NodeViewWrapper locally or use a trick
-  // But ImageView is called by ReactNodeViewRenderer which we imported.
-  // We can't easily avoid the import here if we want to use the component.
-  // Actually, we can import it inside the component or pass it.
-  
   return (
-    <div className="max-w-full group my-4 mx-auto block text-center" style={{ userSelect: "none" }}>
+    <NodeViewWrapper className="max-w-full group my-4 mx-auto block text-center" style={{ userSelect: "none" }}>
        <div 
          className="relative inline-block overflow-hidden" 
          style={{ resize: "horizontal", minWidth: "150px", maxWidth: "100%", width: props.node.attrs.width }}
@@ -62,6 +54,6 @@ function ImageView(props: any) {
             onChange={(e) => props.updateAttributes({ alt: e.target.value })}
          />
        </figcaption>
-    </div>
+    </NodeViewWrapper>
   )
 }

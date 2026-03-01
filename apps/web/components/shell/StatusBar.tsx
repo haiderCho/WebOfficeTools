@@ -11,6 +11,8 @@ export function StatusBar() {
       style={{ height: "var(--statusbar-height)" }}
     >
       <div className="flex items-center gap-4">
+        <span>Page {stats.pages || 1}</span>
+        <span className="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-700" />
         <span>Words: {stats.words || 0}</span>
         <span>Chars: {stats.chars || 0}</span>
       </div>
