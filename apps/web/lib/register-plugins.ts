@@ -17,8 +17,12 @@ export function registerAllPlugins() {
     import("../../../plugins/table-builder/index")
   )
 
+  registerPlugin("spreadsheet", () => 
+    import("../../../plugins/spreadsheet/src/index")
+  )
+
   // Fallbacks for Phase 2+ types
-  const fallbacks = ["spreadsheet", "slides", "latex", "markdown", "pdf"]
+  const fallbacks = ["slides", "latex", "markdown", "pdf"]
   fallbacks.forEach(type => {
     registerPlugin(type, () => import("../../../plugins/_stub/index"))
   })

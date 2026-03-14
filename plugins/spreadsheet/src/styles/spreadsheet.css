@@ -1,0 +1,78 @@
+.spreadsheet-container {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+}
+
+/* Ensure Handsontable headers are visible and styled */
+.handsontable th {
+  background-color: #f8fafc !important;
+  font-weight: 600 !important;
+  color: #475569 !important;
+  border-right: 1px solid #e2e8f0 !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.dark .handsontable th {
+  background-color: #0f172a !important;
+  color: #94a3b8 !important;
+  border-right: 1px solid #1e293b !important;
+  border-bottom: 1px solid #1e293b !important;
+}
+
+.handsontable td {
+  border-right: 1px solid #f1f5f9 !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.dark .handsontable td {
+  border-right: 1px solid #1e293b !important;
+  border-bottom: 1px solid #1e293b !important;
+}
+
+/* Cell Formatting Utilities */
+.handsontable .font-bold {
+  font-weight: 700 !important;
+}
+
+.handsontable .italic {
+  font-style: italic !important;
+}
+
+.handsontable .htLeft {
+  text-align: left !important;
+}
+
+.handsontable .htCenter {
+  text-align: center !important;
+}
+
+.handsontable .htRight {
+  text-align: right !important;
+}
+
+/* Premium Export Button Styling */
+.spreadsheet-export-btn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 6px 14px !important;
+  background-color: #166534 !important; /* Dark Green */
+  color: #ffffff !important;
+  border-radius: 6px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border: 1px solid #14532d !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+.spreadsheet-export-btn:hover {
+  background-color: #15803d !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.spreadsheet-export-btn:active {
+  transform: scale(0.95) !important;
+}
