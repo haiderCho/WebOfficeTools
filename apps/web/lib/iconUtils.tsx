@@ -4,9 +4,10 @@ export const TYPE_TO_EXTENSION: Record<string, string> = {
   word: 'docx',
   spreadsheet: 'xlsx',
   slides: 'pptx',
-  latex: 'tex',
+
   markdown: 'md',
   table: 'csv',
+  latex: 'tex',
 };
 
 export function DocumentIcon({ type, className }: { type: string; className?: string }) {

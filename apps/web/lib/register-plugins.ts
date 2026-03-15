@@ -25,8 +25,14 @@ export function registerAllPlugins() {
     import("../../../plugins/presentation/src/index")
   )
 
+  registerPlugin("latex", () => 
+    import("../../../plugins/latex/src/index")
+  )
+
+
+
   // Fallbacks for Phase 2+ types
-  const fallbacks = ["latex", "markdown", "pdf"]
+  const fallbacks = ["markdown", "pdf"]
   fallbacks.forEach(type => {
     registerPlugin(type, () => import("../../../plugins/_stub/index"))
   })

@@ -60,7 +60,7 @@ export function EditorHost({ docId }: EditorHostProps) {
     const timer = setTimeout(() => {
       saveDocument(document)
       setIsDirty(false)
-    }, 1500) // 1.5s debounce
+    }, 500) // 500ms debounce
 
     return () => clearTimeout(timer)
   }, [document, isDirty, saveDocument])

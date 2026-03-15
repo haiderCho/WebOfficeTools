@@ -1,0 +1,35 @@
+\section{Introduction}
+
+Type your LaTeX here using $E=mc^2$ or central equations like:
+
+\[\sum_{i=1}^n i = \frac{n(n+1)}{2}\]
+
+
+\begin{tabular}{cc}
+  Header L & Header R \\
+  \hline
+  Data 1 & Data 2 \\
+  Data 3 & Data 4 \\
+\end{tabular}
+
+
+
+\begin{itemize}
+  \item First Item
+  \item Second Item
+\end{itemize}
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics{asset:111343.jpg}
+  \caption{111343.jpg}
+\end{figure}
+
+
+
+\subsection{New Subsection}
+
+% Note: This is a comment
+
+

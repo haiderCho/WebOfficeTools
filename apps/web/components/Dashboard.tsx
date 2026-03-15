@@ -28,12 +28,7 @@ const DOC_TYPES = [
     icon: "/icons/pptx.svg",
     description: "Slide deck",
   },
-  {
-    type: "latex",
-    label: "LaTeX",
-    icon: "/icons/doc.svg",
-    description: "Academic writing",
-  },
+
   {
     type: "markdown",
     label: "Markdown",

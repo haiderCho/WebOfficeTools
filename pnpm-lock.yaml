@@ -223,6 +223,43 @@ importers:
         specifier: ^5.7.0
         version: 5.9.3
 
+  plugins/latex:
+    dependencies:
+      '@opensuite/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@opensuite/plugin-api':
+        specifier: workspace:*
+        version: link:../../packages/plugin-api
+      '@opensuite/utils':
+        specifier: workspace:^
+        version: link:../../packages/utils
+      katex:
+        specifier: ^0.16.33
+        version: 0.16.33
+      lucide-react:
+        specifier: ^0.475.0
+        version: 0.475.0(react@19.2.4)
+      react:
+        specifier: ^19.0.0
+        version: 19.2.4
+      zustand:
+        specifier: ^5.0.0
+        version: 5.0.11(@types/react@19.2.14)(immer@10.2.0)(react@19.2.4)(use-sync-external-store@1.6.0(react@19.2.4))
+    devDependencies:
+      '@opensuite/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/tsconfig
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19.0.0
+        version: 19.2.3(@types/react@19.2.14)
+      next:
+        specifier: 15.5.12
+        version: 15.5.12(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+
   plugins/presentation:
     dependencies:
       '@opensuite/core':

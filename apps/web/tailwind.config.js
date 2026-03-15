@@ -4,6 +4,7 @@ module.exports = {
     "./app/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "../../packages/ui/src/**/*.{ts,tsx}",
+    "../../plugins/latex/src/**/*.{ts,tsx}",
     "../../plugins/word/src/**/*.{ts,tsx}",
     "../../plugins/table-builder/index.tsx",
     "../../plugins/table-builder/src/**/*.{ts,tsx}",

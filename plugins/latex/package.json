@@ -1,0 +1,21 @@
+{
+  "name": "@opensuite/plugin-latex",
+  "version": "0.0.1",
+  "private": true,
+  "main": "src/index.tsx",
+  "devDependencies": {
+    "@opensuite/tsconfig": "workspace:*",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "next": "15.5.12"
+  },
+  "dependencies": {
+    "@opensuite/core": "workspace:*",
+    "@opensuite/plugin-api": "workspace:*",
+    "@opensuite/utils": "workspace:^",
+    "katex": "^0.16.33",
+    "lucide-react": "^0.475.0",
+    "react": "^19.0.0",
+    "zustand": "^5.0.0"
+  }
+}

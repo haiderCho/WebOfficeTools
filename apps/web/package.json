@@ -13,6 +13,7 @@
     "@opensuite/core": "workspace:*",
     "@opensuite/editor-engine": "workspace:*",
     "@opensuite/plugin-api": "workspace:*",
+
     "@opensuite/ui": "workspace:*",
     "@opensuite/utils": "workspace:*",
     "lucide-react": "^0.475.0",

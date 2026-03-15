@@ -1,19 +1,20 @@
 export interface ExportOptions {
   content: string;
-  from: 'markdown' | 'html' | 'json';
+  from: 'markdown' | 'html' | 'json' | 'latex' | 'tex';
   to: 'docx' | 'pdf' | 'csv' | 'txt' | 'html';
   filename?: string;
+  assets?: { name: string; data: string }[];
 }
 
-// In a real monorepo this might come from an env var or a config package
-const EXPORT_SERVICE_URL = 'http://localhost:3001';
+// Proxy through Next.js API to avoid cross-origin issues
+const EXPORT_API_PATH = '/api/export';
 
 /**
  * Sends content to the Pandoc Export Service and triggers a download.
  */
 export async function exportDocument(options: ExportOptions) {
   try {
-    const response = await fetch(`${EXPORT_SERVICE_URL}/convert`, {
+    const response = await fetch(EXPORT_API_PATH, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
