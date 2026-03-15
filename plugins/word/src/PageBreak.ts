@@ -1,5 +1,15 @@
 import { Node, mergeAttributes } from '@tiptap/core'
 
+declare module '@tiptap/core' {
+  interface Commands<ReturnType> {
+    pageBreak: {
+      /**
+       * Insert a page break
+       */
+      setPageBreak: () => ReturnType
+    }
+  }
+}
 /**
  * PageBreak extension
  * Renders a clear physical gap in the document to simulate MS Word style page breaks.

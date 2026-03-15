@@ -1,0 +1,49 @@
+export interface ExportOptions {
+  content: string;
+  from: 'markdown' | 'html' | 'json';
+  to: 'docx' | 'pdf' | 'csv' | 'txt' | 'html';
+  filename?: string;
+}
+
+// In a real monorepo this might come from an env var or a config package
+const EXPORT_SERVICE_URL = 'http://localhost:3001';
+
+/**
+ * Sends content to the Pandoc Export Service and triggers a download.
+ */
+export async function exportDocument(options: ExportOptions) {
+  try {
+    const response = await fetch(`${EXPORT_SERVICE_URL}/convert`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(options),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || `Export failed with status ${response.status}`);
+    }
+
+    // Handle the file download
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${options.filename || 'document'}.${options.to}`;
+    document.body.appendChild(a);
+    a.click();
+    
+    // Cleanup
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }, 100);
+    
+    return true;
+  } catch (error) {
+    console.error('Export utility error:', error);
+    throw error;
+  }
+}

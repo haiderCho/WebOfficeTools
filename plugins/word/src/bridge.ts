@@ -155,25 +155,45 @@ function blockToNode(block: Block): JSONContent {
 }
 
 function inlineContent(nodes: JSONContent[] = []): InlineContent[] {
-  return (nodes || []).map((n) => ({
-    text: n.text ?? "",
-    marks: (n.marks ?? []).map((m) => ({
-      type: m.type as Mark,
-      props: m.attrs || {},
-    })),
-  }))
+  return (nodes || []).map((n) => {
+    const marks: Mark[] = [];
+    const attrs: Record<string, any> = {};
+
+    (n.marks ?? []).forEach((m) => {
+      if (m.type) {
+        marks.push(m.type as Mark);
+        if (m.attrs) {
+          Object.assign(attrs, m.attrs);
+        }
+      }
+    });
+
+    return {
+      text: n.text ?? "",
+      marks: marks.length > 0 ? marks : undefined,
+      attrs: Object.keys(attrs).length > 0 ? attrs : undefined,
+    };
+  });
 }
 
 function blocksToInline(content: InlineContent[]): JSONContent[] {
-  return (content || []).map((c) => ({
-    type: "text",
-    text: c.text,
-    marks: (c.marks ?? []).map((m) => {
-      if (typeof m === 'string') return { type: m };
-      return { 
-        type: m.type, 
-        attrs: m.props 
-      };
-    }),
-  }))
+  return (content || []).map((c) => {
+    const node: JSONContent = {
+      type: "text",
+      text: c.text,
+    };
+
+    if (c.marks && c.marks.length > 0) {
+      node.marks = c.marks.map((m) => {
+        const mark: any = { type: m };
+        // If there are attrs that belong to this mark (e.g. href for link)
+        if (m === "link" && c.attrs?.href) {
+          mark.attrs = { href: c.attrs.href };
+        }
+        return mark;
+      });
+    }
+
+    return node;
+  });
 }

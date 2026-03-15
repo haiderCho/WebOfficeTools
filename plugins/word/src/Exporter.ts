@@ -38,8 +38,8 @@ export async function exportDocx(editor: any, options: {
         properties: {
           page: {
              size: getPageSize(options.pageSize),
+             margin: getMargins(options.margin),
           },
-          margin: getMargins(options.margin),
         },
         children: content.map((node: any) => parseNode(node)).filter(Boolean).flat(),
       },
@@ -162,7 +162,7 @@ function parseNode(node: any): any {
         alignment: parseAlignment(node.attrs?.textAlign),
       });
     case "heading":
-      let headingLevel = HeadingLevel.HEADING_1;
+      let headingLevel: any = HeadingLevel.HEADING_1;
       if (node.attrs?.level === 2) headingLevel = HeadingLevel.HEADING_2;
       if (node.attrs?.level === 3) headingLevel = HeadingLevel.HEADING_3;
       
@@ -260,14 +260,21 @@ function parseTextNodes(content: any[] = []): TextRun[] {
       const highlight = marks.find((m: any) => m.type === "highlight")?.attrs?.color;
       const link = marks.find((m: any) => m.type === "link")?.attrs?.href;
 
+      const hasBold = !!marks.find((m: any) => m.type === "bold");
+      const hasItalic = !!marks.find((m: any) => m.type === "italic");
+      const hasUnderline = !!marks.find((m: any) => m.type === "underline");
+      const hasStrike = !!marks.find((m: any) => m.type === "strike");
+      const hasSubscript = !!marks.find((m: any) => m.type === "subscript");
+      const hasSuperscript = !!marks.find((m: any) => m.type === "superscript");
+
       return new TextRun({
         text: node.text,
-        bold: !!marks.find((m: any) => m.type === "bold"),
-        italics: !!marks.find((m: any) => m.type === "italic"),
-        underline: !!marks.find((m: any) => m.type === "underline"),
-        strike: !!marks.find((m: any) => m.type === "strike"),
-        subscript: !!marks.find((m: any) => m.type === "subscript"),
-        superscript: !!marks.find((m: any) => m.type === "superscript"),
+        bold: hasBold ? true : undefined,
+        italics: hasItalic ? true : undefined,
+        underline: hasUnderline ? {} : undefined,
+        strike: hasStrike ? true : undefined,
+        subScript: hasSubscript ? true : undefined,
+        superScript: hasSuperscript ? true : undefined,
         color: textStyle.color?.replace('#', ''),
         shading: highlight ? { fill: highlight.replace('#', '') } : undefined,
         size: parseFontSize(textStyle.fontSize),

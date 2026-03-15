@@ -1,7 +1,7 @@
-import { Calculator, Table2, FileSpreadsheet, Bold, Italic, AlignLeft, AlignCenter, AlignRight, Download } from "lucide-react"
-
+import { Calculator, Table2, FileSpreadsheet, Bold, Italic, AlignLeft, AlignCenter, AlignRight, Download, FileDown } from "lucide-react"
 import { useSpreadsheetStore } from "./store"
 import * as XLSX from "xlsx"
+import { exportDocument } from "@opensuite/utils"
 import "./styles/spreadsheet.css"
 
 export default function SpreadsheetToolbar({ document, onChange }: any) {
@@ -37,14 +37,11 @@ export default function SpreadsheetToolbar({ document, onChange }: any) {
   const exportToXLSX = () => {
     if (!spreadsheetBlock) return
     
-    // Create a workbook
     const wb = XLSX.utils.book_new()
-    
-    // Convert cells to worksheet
-    // Simple implementation: convert props.cells to a 2D array first
     const maxRow = Object.keys(cells).reduce((max, key) => Math.max(max, parseInt(key.match(/\d+/)?.[0] || "0")), 0)
     const maxCol = Object.keys(cells).reduce((max, key) => {
-      const label = key.match(/[A-Z]+/)?.[0] || "A"
+      const match = key.match(/[A-Z]+/)
+      const label = match ? match[0] : "A"
       let col = 0
       for (let i = 0; i < label.length; i++) {
         col = col * 26 + (label.charCodeAt(i) - 64)
@@ -60,19 +57,64 @@ export default function SpreadsheetToolbar({ document, onChange }: any) {
       const match = key.match(/^([A-Z]+)(\d+)$/)
       if (!match) return
       const [, label, rowStr] = match
+      if (!label || !rowStr) return
+      
       let col = 0
       for (let i = 0; i < label.length; i++) {
         col = col * 26 + (label.charCodeAt(i) - 64)
       }
       const row = parseInt(rowStr, 10) - 1
-      data[row][col - 1] = cell.value
+      if (data[row] && col > 0 && col <= data[row].length) {
+        data[row][col - 1] = cell?.value || ""
+      }
     })
 
     const ws = XLSX.utils.aoa_to_sheet(data)
     XLSX.utils.book_append_sheet(wb, ws, "Sheet1")
-    
-    // Trigger download
     XLSX.writeFile(wb, `${document.title || "spreadsheet"}.xlsx`)
+  }
+
+  const exportToPDF = async () => {
+    if (!spreadsheetBlock) return
+    let html = `<table border="1" style="border-collapse: collapse; width: 100%;">`
+    const maxRow = Object.keys(cells).reduce((max, key) => Math.max(max, parseInt(key.match(/\d+/)?.[0] || "0")), 0)
+    const maxCol = Object.keys(cells).reduce((max, key) => {
+      const match = key.match(/[A-Z]+/)
+      const label = match ? match[0] : "A"
+      let col = 0
+      for (let i = 0; i < label.length; i++) {
+        col = col * 26 + (label.charCodeAt(i) - 64)
+      }
+      return Math.max(max, col)
+    }, 0)
+
+    for (let r = 0; r < Math.max(maxRow, 1); r++) {
+      html += `<tr>`
+      for (let c = 0; c < Math.max(maxCol, 1); c++) {
+        const key = `${String.fromCharCode(65 + c)}${r + 1}`
+        const cell = cells[key] || { value: "" }
+        const style = cell.format ? `style="` + 
+          (cell.format.bold ? 'font-weight: bold;' : '') +
+          (cell.format.italic ? 'font-style: italic;' : '') +
+          (cell.format.align ? `text-align: ${cell.format.align};` : '') +
+          `"` : ""
+        html += `<td ${style}>${cell.value || ""}</td>`
+      }
+      html += `</tr>`
+    }
+    html += `</table>`
+
+    try {
+      await exportDocument({
+        content: `<h1>${document.title || 'Spreadsheet'}</h1>` + html,
+        from: 'html',
+        to: 'pdf',
+        filename: document.title || 'spreadsheet'
+      })
+    } catch (error) {
+      console.error('PDF Export failed:', error)
+      alert('Professional PDF export failed. Is the export service running?')
+    }
   }
 
   return (
@@ -140,7 +182,16 @@ export default function SpreadsheetToolbar({ document, onChange }: any) {
           title="Export as XLSX"
         >
           <Download size={16} strokeWidth={2.5} />
-          <span>Export</span>
+          <span>Excel</span>
+        </button>
+        <button 
+          onClick={exportToPDF}
+          className="spreadsheet-export-btn bg-red-700 border-red-800"
+          title="Export as PDF (Pro)"
+          style={{ backgroundColor: '#b91c1c', borderColor: '#991b1b' }}
+        >
+          <FileDown size={16} strokeWidth={2.5} />
+          <span>PDF</span>
         </button>
         <div className="w-px h-6 bg-gray-200 dark:bg-gray-800 mx-1" />
         <button className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded text-gray-600 dark:text-gray-400">

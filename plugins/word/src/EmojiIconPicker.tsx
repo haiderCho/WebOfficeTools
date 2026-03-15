@@ -24,10 +24,10 @@ const CATEGORIES = [
 ]
 
 export default function EmojiIconPicker({ onSelect, onClose }: EmojiIconPickerProps) {
-  const [activeTab, setActiveTab] = useState(CATEGORIES[0].id)
+  const [activeTab, setActiveTab] = useState(CATEGORIES[0]!.id)
   const [search, setSearch] = useState('')
 
-  const activeCategory = CATEGORIES.find(c => c.id === activeTab) || CATEGORIES[0]
+  const activeCategory = CATEGORIES.find(c => c.id === activeTab) || CATEGORIES[0]!
 
   const filteredItems = search 
     ? CATEGORIES.flatMap(c => c.items).filter(i => i.includes(search)) // Simple search for now

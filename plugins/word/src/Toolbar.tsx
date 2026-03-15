@@ -13,6 +13,7 @@ import {
 } from "lucide-react"
 import { useWordStore } from "./store"
 import { useState, useRef } from "react"
+import { exportDocument } from "@opensuite/utils"
 import EmojiIconPicker from "./EmojiIconPicker"
 
 export default function WordToolbar({ document, onChange }: ToolbarProps) {
@@ -37,13 +38,34 @@ export default function WordToolbar({ document, onChange }: ToolbarProps) {
   }
 
   const exportToDocx = async () => {
-    const { exportDocx } = await import("./Exporter")
-    exportDocx(editor, { pageSize, margin })
+    try {
+      const content = editor.getHTML()
+      await exportDocument({
+        content,
+        from: 'html',
+        to: 'docx',
+        filename: document.title || 'document'
+      })
+    } catch (error) {
+      // Fallback to legacy if pro fails or we want both
+      const { exportDocx } = await import("./Exporter")
+      exportDocx(editor, { pageSize, margin })
+    }
   }
 
   const exportToPdf = async () => {
-    const { exportPdf } = await import("./Exporter")
-    exportPdf(editor, { pageSize, margin })
+    try {
+      const content = editor.getHTML()
+      await exportDocument({
+        content,
+        from: 'html',
+        to: 'pdf',
+        filename: document.title || 'document'
+      })
+    } catch (error) {
+      const { exportPdf } = await import("./Exporter")
+      exportPdf(editor, { pageSize, margin })
+    }
   }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {

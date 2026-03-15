@@ -5,12 +5,12 @@ import { useEffect, MouseEvent } from "react"
 import { useUIStore } from "../../store/uiStore"
 import { useDocumentStore } from "../../store/documentStore"
 import { formatRelativeTime, capitalize } from "@opensuite/utils"
-import { Edit2, Trash2 } from "lucide-react"
+import { Edit2, Trash2, Search, HelpCircle } from "lucide-react"
 import { DocumentIcon } from "../../lib/iconUtils"
 
 
 export function Sidebar() {
-  const { sidebarOpen } = useUIStore()
+  const { sidebarOpen, toggleCommandPalette } = useUIStore()
   const { documents, fetchDocuments, isLoading, deleteDocument, renameDocument } = useDocumentStore()
 
   useEffect(() => {
@@ -24,8 +24,22 @@ export function Sidebar() {
       className="flex flex-col border-r border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 shrink-0 overflow-hidden"
       style={{ width: "var(--sidebar-width)" }}
     >
-      {/* Header */}
+      {/* Search Bar */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-800">
+        <button
+          onClick={toggleCommandPalette}
+          className="w-full h-9 px-3 flex items-center gap-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-400 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-sm transition-all text-sm group"
+        >
+          <Search size={16} className="group-hover:text-blue-500" />
+          <span className="flex-1 text-left">Search docs...</span>
+          <kbd className="hidden sm:inline-flex h-5 items-center gap-1 rounded border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-1.5 font-mono text-[10px] font-medium text-gray-500 opacity-100">
+            <span className="text-xs">⌘</span>K
+          </kbd>
+        </button>
+      </div>
+
+      {/* Header */}
+      <div className="p-4 pb-2">
         <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
           Documents
         </h2>
@@ -93,6 +107,17 @@ export function Sidebar() {
           ))
         )}
       </nav>
+
+      {/* Footer */}
+      <div className="mt-auto p-4 border-t border-gray-200 dark:border-gray-800">
+        <Link
+          href="/guide"
+          className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
+        >
+          <HelpCircle size={18} />
+          <span>User Guide & Instructions</span>
+        </Link>
+      </div>
     </aside>
   )
 }

@@ -1,5 +1,5 @@
 import React from "react"
-import { useSpreadsheetStore } from "./store"
+import { useSpreadsheetStore } from "../store"
 import { Plus, X } from "lucide-react"
 
 export default function SheetTabs({ sheets, activeSheet, onAdd, onSwitch, onDelete }: any) {

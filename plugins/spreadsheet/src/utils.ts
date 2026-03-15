@@ -26,6 +26,8 @@ export function fromCellKey(key: string): [number, number] {
   if (!match) return [0, 0]
   
   const [, label, rowStr] = match
+  if (!label || !rowStr) return [0, 0]
+  
   let col = 0
   for (let i = 0; i < label.length; i++) {
     col = col * 26 + (label.charCodeAt(i) - 64)
@@ -41,8 +43,8 @@ export function cellsToGrid(cells: Record<string, any>, rows = 50, cols = 26): a
   
   Object.entries(cells).forEach(([key, data]) => {
     const [row, col] = fromCellKey(key)
-    if (row < rows && col < cols) {
-      grid[row][col] = data.value
+    if (row >= 0 && row < rows && col >= 0 && col < cols && grid[row]) {
+      grid[row][col] = data?.value || ""
     }
   })
   

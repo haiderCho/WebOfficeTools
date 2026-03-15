@@ -14,6 +14,7 @@
     "@opensuite/core": "workspace:*",
     "@opensuite/editor-engine": "workspace:*",
     "@opensuite/plugin-api": "workspace:*",
+    "@opensuite/utils": "workspace:^",
     "@sereneinserenade/tiptap-search-and-replace": "^0.1.1",
     "@tiptap/core": "^3.20.0",
     "@tiptap/extension-bubble-menu": "^3.20.0",

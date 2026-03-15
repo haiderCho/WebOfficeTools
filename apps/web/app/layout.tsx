@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import "./globals.css"
 import { PluginInitializer } from "../components/PluginInitializer"
+import SearchModal from "../components/SearchModal"
 
 export const metadata: Metadata = {
   title: "OpenSuite — Web Office Platform",
@@ -15,8 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-white dark:bg-gray-950 antialiased">
+      <body className="min-h-screen bg-white dark:bg-gray-950 antialiased" suppressHydrationWarning>
         <PluginInitializer />
+        <SearchModal />
         <div className="flex h-screen overflow-hidden">{children}</div>
       </body>
     </html>
