@@ -14,6 +14,7 @@ export type ExportFormat =
   | "csv"
   | "pptx"
   | "tex"
+  | "png"
   | "json"
 
 export interface Exporter {
@@ -33,12 +34,14 @@ export interface EditorProps {
   document: Document
   onChange: (doc: Document) => void
   onStatsUpdate?: (stats: { words: number; chars: number }) => void
+  theme?: "light" | "dark" | "system"
 }
 
 
 export interface ToolbarProps {
   document: Document
   onChange: (doc: Document) => void
+  theme?: "light" | "dark" | "system"
 }
 
 // =============================================================================

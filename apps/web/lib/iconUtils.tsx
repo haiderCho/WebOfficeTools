@@ -8,6 +8,7 @@ export const TYPE_TO_EXTENSION: Record<string, string> = {
   markdown: 'md',
   table: 'csv',
   latex: 'tex',
+  diagram: 'tldr',
 };
 
 export function DocumentIcon({ type, className }: { type: string; className?: string }) {

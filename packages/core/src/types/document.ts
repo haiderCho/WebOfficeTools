@@ -27,6 +27,8 @@ export type DocumentType =
   | "markdown"
   | "pdf"
   | "table"
+  | "diagram"
+  | "slides"
 
 // Re-export Block so Document can reference it
 import type { Block } from "./block"

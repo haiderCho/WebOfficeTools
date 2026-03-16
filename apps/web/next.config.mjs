@@ -8,7 +8,9 @@ const nextConfig = {
     "@opensuite/ui",
     "@opensuite/utils",
     "@opensuite/plugin-word",
-    "@opensuite/plugin-table-builder"
+    "@opensuite/plugin-table-builder",
+    "@opensuite/plugin-latex",
+    "@opensuite/plugin-markdown"
   ],
   webpack: (config, { isServer }) => {
     if (!isServer) {

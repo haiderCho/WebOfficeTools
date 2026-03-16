@@ -15,9 +15,10 @@ import {
   Sun,
   Moon
 } from "lucide-react"
+import type { ToolbarProps } from "@opensuite/plugin-api"
 import { useLaTeXStore } from "./store"
 
-export default function LaTeXToolbar() {
+export default function LaTeXToolbar({ document, onChange, theme: appTheme }: ToolbarProps) {
   const { insertSnippet, theme, toggleTheme, triggerUpload, triggerExport } = useLaTeXStore()
   
   const isDark = theme === 'dark'

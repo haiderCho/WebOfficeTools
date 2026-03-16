@@ -13,7 +13,13 @@
     "@opensuite/core": "workspace:*",
     "@opensuite/editor-engine": "workspace:*",
     "@opensuite/plugin-api": "workspace:*",
-
+    "@opensuite/plugin-diagram-studio": "workspace:*",
+    "@opensuite/plugin-latex": "workspace:*",
+    "@opensuite/plugin-markdown": "workspace:*",
+    "@opensuite/plugin-word": "workspace:*",
+    "@opensuite/plugin-spreadsheet": "workspace:*",
+    "@opensuite/plugin-table-builder": "workspace:*",
+    "@opensuite/plugin-presentation": "workspace:*",
     "@opensuite/ui": "workspace:*",
     "@opensuite/utils": "workspace:*",
     "lucide-react": "^0.475.0",
@@ -22,6 +28,10 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-file-icon": "^1.6.0",
+    "react-markdown": "^9.0.1",
+    "react-simplemde-editor": "^5.2.0",
+    "easymde": "^2.18.0",
+    "remark-gfm": "^4.0.0",
     "zustand": "^5.0.0"
   },
   "devDependencies": {

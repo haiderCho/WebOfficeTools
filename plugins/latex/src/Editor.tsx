@@ -13,11 +13,11 @@ export default function LaTeXEditor({ document: doc, onChange, onStatsUpdate }: 
   const { theme, toggleTheme, outline, setOutline, sidebarOpen, toggleSidebar, insertionSignal, uploadSignal, exportSignal } = useLaTeXStore()
   
   const [content, setContent] = useState(
-    (doc.blocks[0]?.content as string) || "\\section{Introduction}\n\nType your LaTeX here using $E=mc^2$ or central equations like:\n\n\\[\\sum_{i=1}^n i = \\frac{n(n+1)}{2}\\]"
+    (doc.blocks[0]?.content as unknown as string) || "\\section{Introduction}\n\nType your LaTeX here using $E=mc^2$ or central equations like:\n\n\\[\\sum_{i=1}^n i = \\frac{n(n+1)}{2}\\]"
   )
   
   // Local asset state to handle immediate UI updates
-  const [localAssets, setLocalAssets] = useState<any[]>(doc.metadata.assets || [])
+  const [localAssets, setLocalAssets] = useState<any[]>((doc.metadata.assets as any[]) || [])
   const [compiling, setCompiling] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [scale, setScale] = useState(1)
@@ -31,7 +31,7 @@ export default function LaTeXEditor({ document: doc, onChange, onStatsUpdate }: 
   // Sync local assets when document changes (initial load or external update)
   useEffect(() => {
     if (doc.metadata.assets) {
-      setLocalAssets(doc.metadata.assets)
+      setLocalAssets(doc.metadata.assets as any[])
     }
   }, [doc.id])
 
@@ -261,7 +261,7 @@ export default function LaTeXEditor({ document: doc, onChange, onStatsUpdate }: 
           .replace(/\\textit\{(.*?)\}/g, '<em>$1</em>')
 
         html = html.replace(/\\begin\{itemize\}([\s\S]*?)\\end\{itemize\}/g, (_, inner) => {
-          const items = inner.split('\\item').filter(Boolean).map(item => `<li>${item.trim()}</li>`).join('')
+          const items = inner.split('\\item').filter(Boolean).map((item: string) => `<li>${item.trim()}</li>`).join('')
           return `<ul class="list-disc pl-8 my-6 space-y-2 font-serif">${items}</ul>`
         })
 
@@ -479,6 +479,7 @@ export default function LaTeXEditor({ document: doc, onChange, onStatsUpdate }: 
         </div>
       </div>
 
+      {/* @ts-ignore */}
       <style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }

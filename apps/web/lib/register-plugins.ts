@@ -10,29 +10,35 @@ export function registerAllPlugins() {
   if (typeof window === "undefined") return
 
   registerPlugin("word", () => 
-    import("../../../plugins/word/src/index")
+    import("@opensuite/plugin-word")
   )
   
   registerPlugin("table", () => 
-    import("../../../plugins/table-builder/index")
+    import("@opensuite/plugin-table-builder")
   )
 
   registerPlugin("spreadsheet", () => 
-    import("../../../plugins/spreadsheet/src/index")
+    import("@opensuite/plugin-spreadsheet/src/index")
   )
 
   registerPlugin("slides", () => 
-    import("../../../plugins/presentation/src/index")
+    import("@opensuite/plugin-presentation/src/index")
   )
 
   registerPlugin("latex", () => 
-    import("../../../plugins/latex/src/index")
+    import("@opensuite/plugin-latex")
   )
 
+  registerPlugin("markdown", () => 
+    import("@opensuite/plugin-markdown")
+  )
 
+  registerPlugin("diagram", () => 
+    import("@opensuite/plugin-diagram-studio")
+  )
 
   // Fallbacks for Phase 2+ types
-  const fallbacks = ["markdown", "pdf"]
+  const fallbacks = ["pdf"]
   fallbacks.forEach(type => {
     registerPlugin(type, () => import("../../../plugins/_stub/index"))
   })

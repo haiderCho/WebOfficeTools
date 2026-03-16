@@ -36,6 +36,18 @@ const DOC_TYPES = [
     description: "Plain text markup",
   },
   {
+    type: "latex",
+    label: "LaTeX",
+    icon: "/icons/doc.svg",
+    description: "Scientific documents",
+  },
+  {
+    type: "diagram",
+    label: "Diagram Studio",
+    icon: "/icons/diagram.svg",
+    description: "Flowcharts & wireframes",
+  },
+  {
     type: "table",
     label: "Table Builder",
     icon: "/icons/csv.svg",

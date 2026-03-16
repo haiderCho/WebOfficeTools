@@ -5,6 +5,7 @@ import type { Document } from "@opensuite/core"
 import type { Plugin } from "@opensuite/plugin-api"
 import { Skeleton } from "@opensuite/ui"
 import { useDocumentStore } from "../store/documentStore"
+import { useUIStore } from "../store/uiStore"
 
 interface EditorHostProps {
   docId: string
@@ -17,6 +18,7 @@ export function EditorHost({ docId }: EditorHostProps) {
   const [error, setError] = useState<string | null>(null)
   const saveDocument = useDocumentStore(s => s.saveDocument)
   const setStats = useDocumentStore(s => s.setStats)
+  const theme = useUIStore(s => s.theme)
 
   const [isDirty, setIsDirty] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
@@ -113,13 +115,14 @@ export function EditorHost({ docId }: EditorHostProps) {
   return (
     <div className="flex-1 flex flex-col min-h-0">
       {/* Plugin Toolbar */}
-      <ToolbarComponent document={document} onChange={handleChange} />
+      <ToolbarComponent document={document} onChange={handleChange} theme={theme} />
       {/* Plugin Editor */}
       <div className="flex-1 overflow-auto">
         <EditorComponent 
           document={document} 
           onChange={handleChange} 
           onStatsUpdate={handleStatsUpdate}
+          theme={theme}
         />
 
       </div>

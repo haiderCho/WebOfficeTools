@@ -1,0 +1,27 @@
+{
+  "name": "@opensuite/plugin-diagram-studio",
+  "version": "0.0.1",
+  "private": true,
+  "main": "src/index.tsx",
+  "devDependencies": {
+    "@opensuite/tsconfig": "workspace:*",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "next": "15.5.12",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "@opensuite/core": "workspace:*",
+    "@opensuite/editor-engine": "workspace:*",
+    "@opensuite/plugin-api": "workspace:*",
+    "@opensuite/ui": "workspace:*",
+    "@opensuite/utils": "workspace:*",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.475.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^2.6.1",
+    "tldraw": "2.4.4",
+    "zustand": "^5.0.0"
+  }
+}
