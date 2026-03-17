@@ -12,6 +12,9 @@ const nextConfig = {
     "@opensuite/plugin-latex",
     "@opensuite/plugin-markdown"
   ],
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'react-icons', 'date-fns', 'lodash'],
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.alias = {
